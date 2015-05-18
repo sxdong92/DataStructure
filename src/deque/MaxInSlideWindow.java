@@ -7,7 +7,7 @@ import java.util.LinkedList;
 public class MaxInSlideWindow {
 	/**
 	 * 
-	 * @param nums
+	 * @param nums array of integers
 	 * @param k the size of the sliding window.
 	 * @return
 	 */
