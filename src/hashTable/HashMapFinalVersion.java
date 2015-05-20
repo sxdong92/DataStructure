@@ -1,7 +1,7 @@
 package hashTable;
 
 
-public class HashMapFinalVersion< K, V> {     
+public class HashMapFinalVersion<K, V> {     
     private int size; 
     private static int INIT_CAPACITY = 16;   
     private Entry< K, V>[] container; 
@@ -14,7 +14,7 @@ public class HashMapFinalVersion< K, V> {
         	throw new IllegalArgumentException("Illegal initial capacity: " + init_Capaticy); 
         }   
         if(load_factor <= 0 || Float.isNaN(load_factor)) {
-        	throw new IllegalArgumentException("Illegal load factor: "  + load_factor);
+        	throw new IllegalArgumentException("Illegal load factor: " + load_factor);
         }
         
         this.LOAD_FACTOR = load_factor;     
@@ -40,13 +40,12 @@ public class HashMapFinalVersion< K, V> {
         int hash = k.hashCode();     
         //将所有信息封装为一个Entry     
         Entry< K,V> temp=new Entry(k,v,hash);     
-            if(setEntry(temp, container)){      
-                size++;     
-                return true;     
-            }     
-            return false;     
-    }     
-    
+        if(setEntry(temp, container)) {
+            size++;     
+            return true;     
+        }     
+        return false;     
+    }
     
     /**   
      * 扩容的方法   
@@ -67,8 +66,7 @@ public class HashMapFinalVersion< K, V> {
             }     
         }     
         // 3.改变指向     
-        container = newTable;     
-             
+        container = newTable;
     }     
          
     /**   
@@ -101,30 +99,27 @@ public class HashMapFinalVersion< K, V> {
                     return true;   
                 }   
                 //不相等则比较下一个元素     
-                else if (temp.key != entry.key) {     
-                        //到达队尾，中断循环     
-                        if(null==entry.next) {     
-                            break;     
-                        }     
-                        // 没有到达队尾，继续遍历下一个元素     
-                        entry = entry.next;     
+                else if(temp.key != entry.key) {    
+                	//到达队尾，中断循环     
+                    if(null == entry.next) break;     
+                    // 没有到达队尾，继续遍历下一个元素     
+                    entry = entry.next;     
                 }     
             }     
             // 3.2当遍历到了队尾，如果都没有相同的元素，则将该元素挂在队尾     
-            addEntry2Last(entry,temp);     
+            addEntryToLast(entry,temp);     
             return true;  
         }     
         // 4.若不存在,直接设置初始化元素     
         setFirstEntry(temp,index,table);     
         return true;     
     }     
-         
-    private void addEntry2Last(Entry< K, V> entry, Entry< K, V> temp) {     
-        if (size > max) {     
+    
+    private void addEntryToLast(Entry<K, V> entry, Entry<K, V> temp) {
+        if(size > max) {     
             reSize(container.length * 4);     
         }     
-        entry.next=temp;     
-             
+        entry.next=temp;        
     }     
     
     /**   
@@ -133,17 +128,15 @@ public class HashMapFinalVersion< K, V> {
      * @param index   
      * @param table   
      */    
-    private void setFirstEntry(Entry< K, V> temp, int index, Entry[] table) {     
+    private void setFirstEntry(Entry<K, V> temp, int index, Entry[] table) {     
         // 1.判断当前容量是否超标，如果超标，调用扩容方法     
-        if (size > max) {     
+        if(size > max) {     
             reSize(table.length * 4);     
         }     
         // 2.不超标，或者扩容以后，设置元素     
-        table[index] = temp;     
-        //！！！！！！！！！！！！！！！     
+        table[index] = temp;       
         //因为每次设置后都是新的链表，需要将其后接的结点都去掉     
-        //NND，少这一行代码卡了哥哥7个小时（代码重构）     
-        temp.next=null;     
+        temp.next = null;     
     }     
     
     /**   
@@ -165,7 +158,7 @@ public class HashMapFinalVersion< K, V> {
             return null;     
         }     
         // 4。若不为空，遍历链表，比较k是否相等,如果k相等，则返回该value     
-        while (null != entry) {     
+        while (null != entry) {
             if (k == entry.key||entry.key.equals(k)) {     
                 return entry.value;     
             }     
@@ -207,9 +200,15 @@ public class HashMapFinalVersion< K, V> {
         //相应的getter()方法     
     }
     
-    
     public static void main(String[] args) {
-    	
+    	HashMapFinalVersion<String, Integer> hm = new HashMapFinalVersion<String, Integer>();
+    	hm.put("Xudong", 100);
+//    	hm.put(null, 0);
+    	//暂时不支持null做key， 会抛出nullPointerException
+    	hm.put("Alex", 150);
+    	hm.put("Alexander", 120);
+    	System.out.println(hm.size);
+    	System.out.println(hm.max);
     }
 }    
 
