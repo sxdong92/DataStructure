@@ -16,8 +16,7 @@ public class MyHashMapWithGeneric<K, V> {
 	@SuppressWarnings("unchecked")
 	public MyHashMapWithGeneric(int capacity) {
 		if (capacity <= 0) {
-			throw new IllegalArgumentException(
-					"capacity can not be negative or zero");
+			throw new IllegalArgumentException("capacity can not be negative or zero");
 		}
 
 		// 保证 capacity 是2的n次方
