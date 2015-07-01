@@ -4,16 +4,16 @@ package hashTable;
 public class HashMapFinalVersion<K, V> {     
     private int size; 
     private static int INIT_CAPACITY = 16;   
-    private Entry< K, V>[] container; 
+    private Entry<K, V>[] container; 
     private static float LOAD_FACTOR = 0.75f;// 装载因子     
     private int max;// 能存的最大的数=capacity*factor     
     
     // 自己设置容量和装载因子的构造器     
     public HashMapFinalVersion(int init_Capaticy, float load_factor) {     
-        if(init_Capaticy < 0) {
+        if (init_Capaticy < 0) {
         	throw new IllegalArgumentException("Illegal initial capacity: " + init_Capaticy); 
         }   
-        if(load_factor <= 0 || Float.isNaN(load_factor)) {
+        if (load_factor <= 0 || Float.isNaN(load_factor)) {
         	throw new IllegalArgumentException("Illegal load factor: " + load_factor);
         }
         
@@ -39,8 +39,8 @@ public class HashMapFinalVersion<K, V> {
         // 因为自己很难写出对不同的类型都适用的Hash算法，故调用JDK给出的hashCode()方法来计算hash值     
         int hash = k.hashCode();     
         //将所有信息封装为一个Entry     
-        Entry< K,V> temp=new Entry(k,v,hash);     
-        if(setEntry(temp, container)) {
+        Entry<K, V> temp=new Entry<K, V>(k, v, hash);     
+        if (setEntry(temp, container)) {
             size++;     
             return true;     
         }     
@@ -78,30 +78,30 @@ public class HashMapFinalVersion<K, V> {
      * @param table   
      * @return   
      */    
-    private boolean setEntry(Entry<K,V> temp,Entry[] table){     
+    private boolean setEntry(Entry<K,V> temp, Entry[] table){     
         // 根据hash值找到下标     
         int index = indexFor(temp.hash, table.length);     
         // 根据下标找到对应元素     
         Entry<K, V> entry = table[index];     
         // 3.若存在     
-        if(null != entry) {     
+        if (null != entry) {     
             // 3.1遍历整个链表，判断是否相等     
-            while(null != entry) {
+            while (null != entry) {
                 //判断相等的条件时应该注意，除了比较地址相同外，引用传递的相等用equals()方法比较     
                 //相等则不存，返回false     
-            	if((temp.key == entry.key || temp.key.equals(entry.key)) 
+            	if ((temp.key == entry.key || temp.key.equals(entry.key)) 
             			&& temp.hash == entry.hash 
             			&& (temp.value == entry.value || temp.value.equals(entry.value))) {     
                     return false;     
                 }    
-                else if(temp.key == entry.key && temp.value != entry.value) {   
+                else if (temp.key == entry.key && temp.value != entry.value) {   
                     entry.value = temp.value;   
                     return true;   
                 }   
                 //不相等则比较下一个元素     
-                else if(temp.key != entry.key) {    
+                else if (temp.key != entry.key) {    
                 	//到达队尾，中断循环     
-                    if(null == entry.next) break;     
+                    if (null == entry.next) break;     
                     // 没有到达队尾，继续遍历下一个元素     
                     entry = entry.next;     
                 }     
@@ -116,7 +116,7 @@ public class HashMapFinalVersion<K, V> {
     }     
     
     private void addEntryToLast(Entry<K, V> entry, Entry<K, V> temp) {
-        if(size > max) {     
+        if (size > max) {     
             reSize(container.length * 4);     
         }     
         entry.next=temp;        
@@ -130,7 +130,7 @@ public class HashMapFinalVersion<K, V> {
      */    
     private void setFirstEntry(Entry<K, V> temp, int index, Entry[] table) {     
         // 1.判断当前容量是否超标，如果超标，调用扩容方法     
-        if(size > max) {     
+        if (size > max) {     
             reSize(table.length * 4);     
         }     
         // 2.不超标，或者扩容以后，设置元素     
@@ -146,7 +146,7 @@ public class HashMapFinalVersion<K, V> {
      * @return   
      */    
     public V get(K k) {     
-        Entry< K, V> entry = null;     
+        Entry<K, V> entry = null;     
         // 1.计算K的hash值     
         int hash = k.hashCode();     
         // 2.根据hash值找到下标     
